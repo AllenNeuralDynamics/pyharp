@@ -1,4 +1,6 @@
 import serial
+import time
+from threading import Thread
 from typing import Optional, Union
 from pathlib import Path
 
@@ -21,6 +23,8 @@ class Device:
     """
 
     _ser: serial.Serial
+    _reply_cache: dict
+    _keep_thread_active: bool
     _dump_file_path: Path
 
     WHO_AM_I: int
@@ -35,6 +39,8 @@ class Device:
     DEVICE_NAME: str
 
     def __init__(self, serial_port: str, dump_file_path: Optional[str] = None):
+        self._reply_cache = {}
+        self._keep_thread_active = False
         self._serial_port = serial_port
         if dump_file_path is None:
             self._dump_file_path = None
@@ -78,6 +84,14 @@ class Device:
             bytesize=8,
             rtscts=True,
         )
+        # TODO: put the device in standby mode.
+        # Flush the buffer to get rid of incoming messages.
+
+
+    def launch(self):
+        self._keep_thread_active = True
+        self._thread_worker = Thread(target=self.spin_worker, daemon=True).start()
+
 
     def disconnect(self) -> None:
         self._ser.close()
@@ -86,7 +100,7 @@ class Device:
         address = CommonRegisters.WHO_AM_I
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU16(address).frame, dump=False
+            HarpMessage.ReadU16(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -95,7 +109,7 @@ class Device:
         address = CommonRegisters.WHO_AM_I
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU16(address).frame, dump=False
+            HarpMessage.ReadU16(address), dump=False
         )
 
         return device_names.get(reply.payload_as_int())
@@ -104,7 +118,7 @@ class Device:
         address = CommonRegisters.HW_VERSION_H
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -113,7 +127,7 @@ class Device:
         address = CommonRegisters.HW_VERSION_L
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -122,7 +136,7 @@ class Device:
         address = CommonRegisters.ASSEMBLY_VERSION
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -131,7 +145,7 @@ class Device:
         address = CommonRegisters.HARP_VERSION_H
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -140,7 +154,7 @@ class Device:
         address = CommonRegisters.HARP_VERSION_L
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -149,7 +163,7 @@ class Device:
         address = CommonRegisters.FIRMWARE_VERSION_H
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_int()
@@ -158,7 +172,7 @@ class Device:
         address = CommonRegisters.FIRMWARE_VERSION_L
 
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
 )
 
         return reply.payload_as_int()
@@ -166,16 +180,16 @@ class Device:
     def read_device_name(self) -> str:
         address = CommonRegisters.DEVICE_NAME
 
-        # reply: Optional[bytes] = self.send(HarpMessage.ReadU8(address).frame, 13 + 24)
+        # reply: Optional[bytes] = self.send(HarpMessage.ReadU8(address), 13 + 24)
         reply: ReplyHarpMessage = self.send(
-            HarpMessage.ReadU8(address).frame, dump=False
+            HarpMessage.ReadU8(address), dump=False
         )
 
         return reply.payload_as_string()
 
     def read_device_mode(self) -> DeviceMode:
         address = CommonRegisters.OPERATION_CTRL
-        reply = self.send(HarpMessage.ReadU8(address).frame)
+        reply = self.send(HarpMessage.ReadU8(address))
         print(reply)
         return DeviceMode(reply.payload_as_int() & 0x03)
 
@@ -184,62 +198,90 @@ class Device:
         """Change the device's OPMODE. Reply can be ignored."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
-        reg_value = self.send(HarpMessage.ReadU8(address).frame).payload_as_int()
+        reg_value = self.send(HarpMessage.ReadU8(address)).payload_as_int()
         reg_value &= ~0x03 # mask off old mode.
         reg_value |= mode.value
-        reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
+        reply = self.send(HarpMessage.WriteU8(address, reg_value))
         return reply
 
     def enable_status_led(self):
         """enable the device's status led if one exists."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
-        reg_value = self.send(HarpMessage.ReadU8(address).frame).payload_as_int()
+        reg_value = self.send(HarpMessage.ReadU8(address)).payload_as_int()
         reg_value |= (1 << 6)
-        reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
+        reply = self.send(HarpMessage.WriteU8(address, reg_value))
 
     def enable_status_led(self):
         """enable the device's status led if one exists."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
-        reg_value = self.send(HarpMessage.ReadU8(address).frame).payload_as_int()
+        reg_value = self.send(HarpMessage.ReadU8(address)).payload_as_int()
         reg_value &= ~(1 << 6)
-        reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
+        reply = self.send(HarpMessage.WriteU8(address, reg_value))
 
     def enable_alive_en(self):
         """Enable ALIVE_EN such that the device sends an event each second."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
-        reg_value = self.send(HarpMessage.ReadU8(address).frame).payload_as_int()
+        reg_value = self.send(HarpMessage.ReadU8(address)).payload_as_int()
         reg_value |= (1 << 7)
-        reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
+        reply = self.send(HarpMessage.WriteU8(address, reg_value))
 
     def disable_alive_en(self):
         """disable ALIVE_EN such that the device does not send an event each second."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
-        reg_value = self.send(HarpMessage.ReadU8(address).frame).payload[0]
+        reg_value = self.send(HarpMessage.ReadU8(address)).payload[0]
         reg_value &= ((1<< 7) ^ 0xFF) # bitwise ~ operator substitute for Python ints.
-        reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
+        reply = self.send(HarpMessage.WriteU8(address, reg_value))
 
 
-    def send(self, message_bytes: bytearray, dump: bool = True) -> ReplyHarpMessage:
+    def send(self, message: HarpMessage, dump: bool = True) -> ReplyHarpMessage:
         """Send a harp message; return the device's reply."""
-        self._ser.write(message_bytes)
+        self._ser.write(message.frame)
+        # clear the cache with a timestamp of when we made the read request.
+        # FIXME: do we want to timestamp after the data goes out with flush?
+        self._reply_cache[message.address] = (time.perf_counter(), None)
 
-        # TODO: handle case where read is None
-        # FIXME: waiting for a message reply like this
-        #        breaks if events are also being broadcasted (i.e: in ActiveMode).
-        reply: ReplyHarpMessage = self._read()
-
+        reply: ReplyHarpMessage = self.read(message.address)
         if dump:
             self._dump_reply(reply.frame)
+        return reply
 
+
+    def spin_worker(self) -> None:
+        """ called in a thread/process."""
+
+        # Bring in replies and cached them.
+        while True and self._keep_thread_active:
+            reply = self._read()
+            # Update the cache.
+            # TODO: timestamp incoming data with local time?
+            self._reply_cache[reply.address] = (time.perf_counter(), reply)
+
+
+    def read(self, address) -> ReplyHarpMessage:
+        """Read from cache if unread data has been cached. Blocking read if not."""
+        # Blocking read if we're not threading.
+        if not self._keep_thread_active:
+            return self._read()
+
+        # Block until a reply gets cached.
+        # Discard time checking for now.
+        # Separate thread will update the cache periodically.
+        _, reply = self._reply_cache.get(address, (None, None))
+        while reply is None:
+            _, reply = self._reply_cache.get(address, (None, None))
+        # remove the data once read.
+        del self._reply_cache[address]
         return reply
 
 
     def _read(self) -> Union[ReplyHarpMessage, None]:
-        """(Blocking) Read an incoming serial message."""
+        """(Blocking) Read an incoming message from the serial port."""
+        self._ser.flush() # wait for outgoing data to leave serial port.
+
         # block until we get at least one byte.
         while True:
             if self._ser.inWaiting():
@@ -263,3 +305,20 @@ class Device:
         assert self._dump_file_path is not None
         with self._dump_file_path.open(mode="ab") as f:
             f.write(reply)
+
+
+    def __enter__(self):
+        return self
+
+
+    def __exit__(self):
+        self.__del__()
+
+
+    def __del__(self):
+        if self._keep_thread_active:
+            self._keep_thread_active = False
+            self._thread_worker.join()
+            while self._thread_worker.isAlive():
+                pass
+        self.disconnect()

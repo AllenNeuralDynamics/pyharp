@@ -60,6 +60,7 @@ class OUTPUTS_OUT(Enum):
     DO3 = 13
 
 class PORT_DIOS_IN(Enum):
+    #TODO should these all be 0s (?)
     DIO0 = 0
     DIO1 = 0
     DIO2 = 0
@@ -71,7 +72,7 @@ class Events(Enum):
     port_digital_ios = 1    # PORT_DIOS_IN
     analog_input = 2        # DATA
     cam0 = 3                # CAM0
-    cam1 = 3                # CAM1
+    cam1 = 4                # CAM1
 
 
 class Behavior:
@@ -135,7 +136,7 @@ class Behavior:
                               (1 << Events.cam1.value) ) ^ 0xFF)
         reg_type, reg_index, _ = REGISTERS["EVNT_ENABLE"]
         write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-        return self.device.send(write_message_type(reg_index, event_reg_bitmask).frame)
+        return self.device.send(write_message_type(reg_index, event_reg_bitmask))
 
 
     def enable_events(self, *events: Events) -> ReplyHarpMessage:
@@ -145,7 +146,7 @@ class Behavior:
             event_reg_bitmask |= (1 << event.value)
         reg_type, reg_index, _ = REGISTERS["EVNT_ENABLE"]
         write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-        return self.device.send(write_message_type(reg_index, event_reg_bitmask).frame)
+        return self.device.send(write_message_type(reg_index, event_reg_bitmask))
 
 
 # Board inputs, outputs, and some settings configured as @properties.
@@ -155,7 +156,7 @@ class Behavior:
         """return the state of all PORT digital inputs."""
         reg_type, reg_index, _ = REGISTERS["PORT_DIS"]
         read_message_type = self.__class__.READ_MSG_LOOKUP[reg_type]
-        return self.device.send(read_message_type(reg_index).frame).payload_as_int()
+        return self.device.send(read_message_type(reg_index)).payload_as_int()
 
     @property
     def DI0(self):
@@ -181,14 +182,14 @@ class Behavior:
 #        """set the state of all PORT digital ios. (1 is output.)"""
 #        reg_type, reg_index, _ = REGISTERS["PORT_DIOS_CONF"]
 #        write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-#        self.device.send(write_message_type(reg_index, bitmask).frame)
+#        self.device.send(write_message_type(reg_index, bitmask))
 #
 #    @property
 #    def all_io_states(self):
 #        """return the state of all PORT digital ios."""
 #        reg_type, reg_index, _ = REGISTERS["PORT_DIOS_IN"]
 #        read_message_type = self.__class__.READ_MSG_LOOKUP[reg_type]
-#        return self.device.send(read_message_type(reg_index).frame).payload_as_int()
+#        return self.device.send(read_message_type(reg_index)).payload_as_int()
 #
 #    @all_io_states.setter
 #    def all_io_states(self, bitmask : int):
@@ -197,19 +198,19 @@ class Behavior:
 #        # _IN register, which is different from the OUTPUT
 #        reg_type, reg_index, _ = REGISTERS["PORT_DIOS_IN"]
 #        write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-#        return self.device.send(write_message_type(reg_index, bitmask).frame)
+#        return self.device.send(write_message_type(reg_index, bitmask))
 #
 #    def set_io_outputs(self, bitmask : int):
 #        """set digital input/outputs to logic 1 according to bitmask."""
 #        reg_type, reg_index, _ = REGISTERS["PORT_DIOS_SET"]
 #        write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-#        return self.device.send(write_message_type(reg_index, bitmask).frame)
+#        return self.device.send(write_message_type(reg_index, bitmask))
 #
 #    def clear_io_outputs(self, bitmask : int):
 #        """clear digital input/outputs (specified with logic 1) according to bitmask."""
 #        reg_type, reg_index, _ = REGISTERS["PORT_DIOS_CLEAR"]
 #        write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-#        return self.device.send(write_message_type(reg_index, bitmask).frame)
+#        return self.device.send(write_message_type(reg_index, bitmask))
 #
 #    @property
 #    def port0_io0(self):
@@ -248,26 +249,26 @@ class Behavior:
         """return the state of all PORT digital inputs."""
         reg_type, reg_index, _ = REGISTERS["OUTPUTS_OUT"]
         read_message_type = self.__class__.READ_MSG_LOOKUP[reg_type]
-        return self.device.send(read_message_type(reg_index).frame).payload_as_int()
+        return self.device.send(read_message_type(reg_index)).payload_as_int()
 
     @all_output_states.setter
     def all_output_states(self, bitmask : int):
         """set the state of all PORT digital inputs."""
         reg_type, reg_index, _ = REGISTERS["OUTPUTS_OUT"]
         write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-        return self.device.send(write_message_type(reg_index, bitmask).frame)
+        return self.device.send(write_message_type(reg_index, bitmask))
 
     def set_outputs(self, bitmask : int):
         """set digital outputs to logic 1 according to bitmask."""
         reg_type, reg_index, _ = REGISTERS["OUTPUTS_SET"]
         write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-        return self.device.send(write_message_type(reg_index, bitmask).frame)
+        return self.device.send(write_message_type(reg_index, bitmask))
 
     def clear_outputs(self, bitmask : int):
         """clear digital outputs (specified with logic 1) according to bitmask."""
         reg_type, reg_index, _ = REGISTERS["OUTPUTS_CLR"]
         write_message_type = self.__class__.WRITE_MSG_LOOKUP[reg_type]
-        return self.device.send(write_message_type(reg_index, bitmask).frame)
+        return self.device.send(write_message_type(reg_index, bitmask))
 
     @property
     def D0(self):
