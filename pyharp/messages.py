@@ -1,7 +1,7 @@
 from __future__ import annotations # for type hints (PEP 563)
 from enum import Enum
 # from abc import ABC, abstractmethod
-from typing import Union, Tuple, Optional
+from typing import Union, Tuple, Optional, List
 import struct
 
 
@@ -122,6 +122,10 @@ class HarpMessage:
     @staticmethod
     def ReadU32(address: int) -> ReadU32HarpMessage:
         return ReadU32HarpMessage(address)
+
+    @staticmethod
+    def ReadS32(address: int) -> ReadS32HarpMessage:
+        return ReadS32HarpMessage(address)
 
     @staticmethod
     def ReadFloat(address: int) -> ReadFloatHarpMessage:
@@ -288,6 +292,11 @@ class ReadU32HarpMessage(ReadHarpMessage):
         super().__init__(PayloadType.U32, address)
 
 
+class ReadS32HarpMessage(ReadHarpMessage):
+    def __init__(self, address: int):
+        super().__init__(PayloadType.S32, address)
+
+
 class ReadFloatHarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.Float, address)
@@ -317,8 +326,12 @@ class WriteHarpMessage(HarpMessage):
         self._frame.append(HarpMessage.DEFAULT_PORT)
         self._frame.append(payload_type.value)
 
-        for i in payload:
-            self._frame.append(i)
+        # Handle payloads that are bytes or bytearray (bytearray = multi-motor instructions)
+        if isinstance(payload, bytearray):
+            self._frame += payload
+        else:
+            for i in payload:
+                self._frame.append(i)
 
         self._frame.append(self.calculate_checksum())
 
@@ -394,11 +407,19 @@ class WriteU32HarpMessage(WriteHarpMessage):
 
 
 class WriteS32HarpMessage(WriteHarpMessage):
-    def __init__(self, address: int, value: int):
+    def __init__(self, address: int, value: int | List[int]):
+        if isinstance(value, list):
+            payload = bytearray()
+            for val in value:
+                payload += val.to_bytes(4, byteorder="little", signed=True)
+            offset = 15
+        else:
+            payload = value.to_bytes(4, byteorder="little", signed=True)
+            offset = 3
         super().__init__(
-            PayloadType.S32, value.to_bytes(4, byteorder="little", signed=True), address, offset=3
+            PayloadType.S32, payload, address, offset=offset
         )
 
     @property
-    def payload(self) -> int:
+    def payload(self) -> int | List[int]:
         return int.from_bytes(self._frame[5:9], byteorder="little", signed=True)
