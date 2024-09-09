@@ -1,7 +1,7 @@
 from __future__ import annotations # for type hints (PEP 563)
 from enum import Enum
 # from abc import ABC, abstractmethod
-from typing import Union, Tuple, Optional
+from typing import Union, Tuple, Optional, List
 import struct
 
 
@@ -124,6 +124,10 @@ class HarpMessage:
         return ReadU32HarpMessage(address)
 
     @staticmethod
+    def ReadS32(address: int) -> ReadS32HarpMessage:
+        return ReadS32HarpMessage(address)
+
+    @staticmethod
     def ReadFloat(address: int) -> ReadFloatHarpMessage:
         return ReadFloatHarpMessage(address)
 
@@ -154,6 +158,9 @@ class HarpMessage:
     @staticmethod
     def WriteS32(address: int, value: int) -> WriteS32HarpMessage:
         return WriteS32HarpMessage(address, value)
+
+    def WriteS32Array(address: int, value: list[int]) -> WriteS32HarpMessage:
+        return WriteS32ArrayHarpMessage(address, value)
 
     @staticmethod
     def parse(frame: bytearray) -> ReplyHarpMessage:
@@ -287,6 +294,9 @@ class ReadU32HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.U32, address)
 
+class ReadS32HarpMessage(ReadHarpMessage):
+    def __init__(self, address: int):
+        super().__init__(PayloadType.S32, address)
 
 class ReadFloatHarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
@@ -393,12 +403,27 @@ class WriteU32HarpMessage(WriteHarpMessage):
         return int.from_bytes(self._frame[5:9], byteorder="little", signed=False)
 
 
-class WriteS32HarpMessage(WriteHarpMessage):
+class WriteU8ArrayMessage(WriteHarpMessage):
+    def __init__(self, address: int, data_format, value: Union[list, tuple]):
+        self.data_format = data_format
+        packed_data = struct.pack(self.data_format, *value)
+        super().__init__(PayloadType.U8, packed_data, address,
+                         offset=(len(packed_data)-1))
+
+    @property
+    def payload(self) -> List[int]:
+        return struct.unpack('{self.data_format}', self._frame[5:4*self.payload_count])[0]
+
+
+class WriteS32ArrayHarpMessage(WriteHarpMessage):
     def __init__(self, address: int, value: int):
+        self.payload_count = len(value)
         super().__init__(
-            PayloadType.S32, value.to_bytes(4, byteorder="little", signed=True), address, offset=3
-        )
+            PayloadType.S32,
+            struct.pack('<{len(value)l', *value),
+            address, offset=(4*self.payload_count - 1))
+
 
     @property
     def payload(self) -> int:
-        return int.from_bytes(self._frame[5:9], byteorder="little", signed=True)
+        return struct.unpack('<{self.payload_count}l', self._frame[5:4*self.payload_count])[0]
