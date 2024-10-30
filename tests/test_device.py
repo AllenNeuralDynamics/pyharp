@@ -1,6 +1,7 @@
 import serial
-
+import time
 from typing import Optional
+
 from pyharp.messages import HarpMessage, ReplyHarpMessage
 from pyharp.device import Device
 
@@ -47,7 +48,7 @@ def test_U8() -> None:
 
     # write 65 on register 38
     write_message = HarpMessage.WriteU8(register, write_value)
-    reply : ReplyHarpMessage = device.send(write_message.frame)
+    reply: ReplyHarpMessage = device.send(write_message.frame)
     assert reply is not None
 
     # read register 38
@@ -84,3 +85,25 @@ def test_U8() -> None:
 #     assert not ser.is_open
 #
 #     # assert data[0] == '\t'
+
+
+def test_device_events(device: Device) -> None:
+
+    event_q = device._ser.event_q
+
+    while True:
+        print(device._ser.event_q.qsize())
+        if not event_q.empty():
+            try:
+                msg: ReplyHarpMessage = event_q.get()
+                print(msg)
+            except Exception:
+                pass
+        time.sleep(0.3)
+
+
+if __name__ == "__main__":
+    # open serial connection and load info
+    device = Device("COM4", "dump.txt")
+    # assert device._dump_file_path.exists()
+    test_device_events(device)
