@@ -47,7 +47,7 @@ def test_U8() -> None:
 
     # write 65 on register 38
     write_message = HarpMessage.WriteU8(register, write_value)
-    reply: ReplyHarpMessage = device.send(write_message.frame)
+    reply : ReplyHarpMessage = device.send(write_message.frame)
     assert reply is not None
 
     # read register 38
@@ -87,7 +87,6 @@ def test_U8() -> None:
 
 
 def test_device_events(device: Device) -> None:
-
     while True:
         print(device.event_count())
         for msg in device.get_events():
