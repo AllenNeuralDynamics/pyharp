@@ -1,6 +1,5 @@
 import serial
 import logging
-import threading
 import queue
 from typing import Optional, Union
 from pathlib import Path
