@@ -17,7 +17,7 @@ class HarpSerialProtocol(serial.threaded.Protocol):
         super().__init__(*args, **kwargs)
 
     def connection_made(self, transport: serial.threaded.ReaderThread) -> None:
-        print(f"Connected to {transport.serial.port}")
+        # print(f"Connected to {transport.serial.port}")
         return super().connection_made(transport)
 
     def data_received(self, data: bytes) -> None:
@@ -26,7 +26,7 @@ class HarpSerialProtocol(serial.threaded.Protocol):
         return super().data_received(data)
 
     def connection_lost(self, exc: Union[BaseException, None]) -> None:
-        print(f"Lost connection!")
+        # print(f"Lost connection!")
         return super().connection_lost(exc)
 
 

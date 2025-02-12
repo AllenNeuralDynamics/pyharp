@@ -6,13 +6,7 @@ from typing import Optional, Union
 from pathlib import Path
 
 from pyharp.harp_serial import HarpSerial
-from pyharp.messages import (
-    HarpMessage,
-    ReadHarpMessage,
-    ReplyHarpMessage,
-    # ResetDevOffsets,
-    Register,
-)
+from pyharp.messages import HarpMessage, ReplyHarpMessage
 from pyharp.messages import CommonRegisters, MessageType
 from pyharp.device_names import device_names
 from enum import Enum
@@ -287,19 +281,20 @@ class Device:
 
         return reply
 
-
     def _read(self) -> Union[ReplyHarpMessage, None]:
         """(Blocking) Read an incoming serial message."""
         try:
             return self._ser.msg_q.get(block=True, timeout=self.read_timeout_s)
         except queue.Empty:
             return None
+        
     def _dump_reply(self, reply: bytes):
         assert self._dump_file_path is not None
         with self._dump_file_path.open(mode="ab") as f:
             f.write(reply)
 
     def get_events(self) -> list[ReplyHarpMessage]:
+        """Get all events from the event queue."""
         msgs = []
         while True:
             try:
@@ -307,3 +302,7 @@ class Device:
             except queue.Empty:
                 break
         return msgs
+
+    def event_count(self) -> int:
+        """Get the number of events in the event queue."""
+        return self._ser.event_q.qsize()

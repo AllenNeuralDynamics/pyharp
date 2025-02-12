@@ -1,7 +1,6 @@
 import serial
 import time
 from typing import Optional
-
 from pyharp.messages import HarpMessage, ReplyHarpMessage
 from pyharp.device import Device
 
@@ -89,21 +88,8 @@ def test_U8() -> None:
 
 def test_device_events(device: Device) -> None:
 
-    event_q = device._ser.event_q
-
     while True:
-        print(device._ser.event_q.qsize())
-        if not event_q.empty():
-            try:
-                msg: ReplyHarpMessage = event_q.get()
-                print(msg)
-            except Exception:
-                pass
+        print(device.event_count())
+        for msg in device.get_events():
+            print(msg)
         time.sleep(0.3)
-
-
-if __name__ == "__main__":
-    # open serial connection and load info
-    device = Device("COM4", "dump.txt")
-    # assert device._dump_file_path.exists()
-    test_device_events(device)
