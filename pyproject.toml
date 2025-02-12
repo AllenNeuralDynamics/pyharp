@@ -5,7 +5,6 @@ description = "Library for data acquisition and control of devices implementing 
 authors = ["filcarv <filipe@open-ephys.org>"]
 license = "MIT"
 readme = 'README.md'
-python-versions = '>3.10'
 
 [tool.poetry.dependencies]
 python = "^3.4"
