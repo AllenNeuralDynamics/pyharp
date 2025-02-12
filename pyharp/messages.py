@@ -1,9 +1,7 @@
-from __future__ import annotations  # for type hints (PEP 563)
+from __future__ import annotations # for type hints (PEP 563)
 from enum import Enum
-
 # from abc import ABC, abstractmethod
-from typing import Union, Tuple, Optional, List, Any
-from dataclasses import dataclass
+from typing import Union, Tuple, Optional, List
 import struct
 
 
@@ -56,16 +54,6 @@ class CommonRegisters:
     OPERATION_CTRL = 0x0A
     RESET_DEV = 0x0B
     DEVICE_NAME = 0x0C
-
-
-@dataclass
-class Register:
-    name: str
-    address: int
-    type: PayloadType
-    access: Optional[str] = None
-    description: Optional[str] = None
-    reset_value: Optional[Any] = None
 
 
 class HarpMessage:
@@ -179,9 +167,9 @@ class HarpMessage:
 # A Response Message from a harp device.
 class ReplyHarpMessage(HarpMessage):
 
+
     def __init__(
-        self,
-        frame: bytearray,
+        self, frame: bytearray,
     ):
         """
 
@@ -191,66 +179,57 @@ class ReplyHarpMessage(HarpMessage):
         self._frame = frame
         # retrieve all content from 11 (where payload starts) until the checksum (not inclusive)
         self._raw_payload = frame[11:-1]
-        self._payload = self._parse_payload(
-            self._raw_payload
-        )  # payload formatted as list[payload type]
+        self._payload = self._parse_payload(self._raw_payload) # payload formatted as list[payload type]
 
         # Assign timestamp after _payload since @properties all rely on self._payload.
-        self._timestamp = (
-            int.from_bytes(frame[5:9], byteorder="little", signed=False)
-            + int.from_bytes(frame[9:11], byteorder="little", signed=False) * 32e-6
-        )
+        self._timestamp = int.from_bytes(frame[5:9], byteorder="little", signed=False) + \
+                          int.from_bytes(frame[9:11], byteorder="little", signed=False)*32e-6
         # Timestamp is junk if it's not present.
         if not (self.payload_type.value & PayloadType.hasTimestamp.value):
             self._timestamp = None
+
 
     def _parse_payload(self, raw_payload) -> list[int]:
         """return the payload as a list of ints after parsing it from the raw payload."""
         is_signed = True if (self.payload_type.value & 0x80) else False
         is_float = True if (self.payload_type.value & 0x40) else False
         bytes_per_word = self.payload_type.value & 0x07
-        payload_len = len(raw_payload)  # payload length in bytes.
+        payload_len = len(raw_payload) # payload length in bytes.
 
-        word_chunks = [
-            raw_payload[i : i + bytes_per_word]
-            for i in range(0, payload_len, bytes_per_word)
-        ]
+        word_chunks = [raw_payload[i:i+bytes_per_word] for i in range(0, payload_len, bytes_per_word)]
         if not is_float:
-            return [
-                int.from_bytes(chunk, byteorder="little", signed=is_signed)
-                for chunk in word_chunks
-            ]
-        else:  # handle float case.
-            return [struct.unpack("<f", chunk)[0] for chunk in word_chunks]
+            return [int.from_bytes(chunk, byteorder="little", signed=is_signed) for chunk in word_chunks]
+        else: # handle float case.
+            return [struct.unpack('<f', chunk)[0] for chunk in word_chunks]
+
 
     def __repr__(self):
         """Print debug representation of a reply message."""
         return self.__str__() + f"\r\nRaw Frame: {self.frame}"
+
 
     def __str__(self):
         """Print friendly representation of a reply message."""
         payload_str = ""
         format_str = ""
         if self.payload_type in [PayloadType.Float, PayloadType.TimestampedFloat]:
-            format_str = ".6f"
+            format_str = '.6f'
         else:
             bytes_per_word = self.payload_type.value & 0x07
-            format_str = f"0{bytes_per_word}b"
+            format_str = f'0{bytes_per_word}b'
 
         for item in self.payload:
             payload_str += f"{item:{format_str}} "
 
-        return (
-            f"Type: {self.message_type.name}\r\n"
-            + f"Length: {self.length}\r\n"
-            + f"Address: {self.address}\r\n"
-            + f"Port: {self.port}\r\n"
-            + f"Timestamp: {self.timestamp}\r\n"
-            + f"Payload Type: {self.payload_type.name}\r\n"
-            + f"Payload Length: {len(self.payload)}\r\n"
-            + f"Payload: {self.payload}\r\n"
-            + f"Checksum: {self.checksum}"
-        )
+        return f"Type: {self.message_type.name}\r\n" + \
+               f"Length: {self.length}\r\n" + \
+               f"Address: {self.address}\r\n" + \
+               f"Port: {self.port}\r\n" + \
+               f"Timestamp: {self.timestamp}\r\n" + \
+               f"Payload Type: {self.payload_type.name}\r\n" + \
+               f"Payload Length: {len(self.payload)}\r\n" + \
+               f"Payload: {self.payload}\r\n" + \
+               f"Checksum: {self.checksum}"
 
     @property
     def payload(self) -> Union[int, list[int]]:
@@ -274,6 +253,7 @@ class ReplyHarpMessage(HarpMessage):
 # A Read Request Message sent to a harp device.
 class ReadHarpMessage(HarpMessage):
     MESSAGE_TYPE: int = MessageType.READ
+
 
     def __init__(self, payload_type: PayloadType, address: int):
         self._frame = bytearray()
@@ -306,7 +286,6 @@ class ReadU16HarpMessage(ReadHarpMessage):
 class ReadS16HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.S16, address)
-
 
 class ReadU32HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
@@ -380,10 +359,7 @@ class WriteS8HarpMessage(WriteHarpMessage):
 class WriteU16HarpMessage(WriteHarpMessage):
     def __init__(self, address: int, value: int):
         super().__init__(
-            PayloadType.U16,
-            value.to_bytes(2, byteorder="little", signed=False),
-            address,
-            offset=1,
+            PayloadType.U16, value.to_bytes(2, byteorder="little", signed=False), address, offset=1
         )
 
     @property
@@ -409,25 +385,20 @@ class WriteFloatHarpMessage(WriteHarpMessage):
     def __init__(self, address: int, value: float):
         super().__init__(
             PayloadType.Float,
-            struct.pack(
-                "<f", value
-            ),  # value.to_bytes(4, byteorder="little", signed=True),
+            struct.pack('<f', value), #value.to_bytes(4, byteorder="little", signed=True),
             address,
             offset=3,
         )
 
     @property
     def payload(self) -> float:
-        return struct.unpack("<f", self._frame[5:9])[0]
+        return struct.unpack('<f', self._frame[5:9])[0]
 
 
 class WriteU32HarpMessage(WriteHarpMessage):
     def __init__(self, address: int, value: int):
         super().__init__(
-            PayloadType.U32,
-            value.to_bytes(4, byteorder="little", signed=False),
-            address,
-            offset=3,
+            PayloadType.U32, value.to_bytes(4, byteorder="little", signed=False), address, offset=3
         )
 
     @property
@@ -445,7 +416,9 @@ class WriteS32HarpMessage(WriteHarpMessage):
         else:
             payload = value.to_bytes(4, byteorder="little", signed=True)
             offset = 3
-        super().__init__(PayloadType.S32, payload, address, offset=offset)
+        super().__init__(
+            PayloadType.S32, payload, address, offset=offset
+        )
 
     @property
     def payload(self) -> int | List[int]:
