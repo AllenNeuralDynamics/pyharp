@@ -1,5 +1,5 @@
 import serial
-
+import time
 from typing import Optional
 from pyharp.messages import HarpMessage, ReplyHarpMessage
 from pyharp.device import Device
@@ -84,3 +84,11 @@ def test_U8() -> None:
 #     assert not ser.is_open
 #
 #     # assert data[0] == '\t'
+
+
+def test_device_events(device: Device) -> None:
+    while True:
+        print(device.event_count())
+        for msg in device.get_events():
+            print(msg)
+        time.sleep(0.3)
