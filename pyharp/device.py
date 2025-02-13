@@ -236,8 +236,19 @@ class Device:
         reg_value &= ~(1 << 5)
         reply = self.send(HarpMessage.WriteU8(address, reg_value).frame)
 
+    def enable_heartbeat(self):
+        """Enable periodic heartbeat from the R_TIMESTAMP_SECONDS register.
+            Alias for :func:`enable_alive_en`."""
+        return self.enable_alive_en()
+
+    def disable_heartbeat(self):
+        """Disable periodic heartbeat from the R_TIMESTAMP_SECONDS register.
+            Alias for :func:`disable_alive_en`."""
+        return self.disable_alive_en()
+
     def enable_alive_en(self):
-        """Enable ALIVE_EN such that the device sends an event each second."""
+        """Enable ALIVE_EN such that the device sends an event each second
+           from the R_TIMESTAMP_SECONDS register."""
         address = CommonRegisters.OPERATION_CTRL
         # Read register first.
         reg_value = self.send(HarpMessage.ReadU8(address).frame).payload_as_int()
