@@ -1,9 +1,9 @@
+from __future__ import annotations # enable subscriptable type hints for lists.
 import serial
 import logging
 import queue
 from typing import Optional, Union
 from pathlib import Path
-from __future__ import annotations # enable subscriptable type hints for lists.
 
 from pyharp.harp_serial import HarpSerial
 from pyharp.messages import HarpMessage, ReplyHarpMessage
