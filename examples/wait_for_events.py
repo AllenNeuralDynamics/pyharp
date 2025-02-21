@@ -24,7 +24,8 @@ device.set_mode(DeviceMode.Active)
 #device.disable_all_events()
 #device.enable_events(Events.port_digital_inputs)
 while True:
-    event_response = device._read() # read any incoming events.
-    if event_response is not None:# and event_response.address != 44:
+    if not device.event_count():
+        pass
+    for msg in device.get_events():
+        print(msg)
         print()
-        print(event_response)
