@@ -298,6 +298,11 @@ class ReadS32HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.S32, address)
 
+class ReadS32HarpMessage(ReadHarpMessage):
+    def __init__(self, address: int):
+        super().__init__(PayloadType.S32, address)
+
+
 class ReadFloatHarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.Float, address)
@@ -327,8 +332,12 @@ class WriteHarpMessage(HarpMessage):
         self._frame.append(HarpMessage.DEFAULT_PORT)
         self._frame.append(payload_type.value)
 
-        for i in payload:
-            self._frame.append(i)
+        # Handle payloads that are bytes or bytearray (bytearray = multi-motor instructions)
+        if isinstance(payload, bytearray):
+            self._frame += payload
+        else:
+            for i in payload:
+                self._frame.append(i)
 
         self._frame.append(self.calculate_checksum())
 
@@ -401,6 +410,25 @@ class WriteU32HarpMessage(WriteHarpMessage):
     @property
     def payload(self) -> int:
         return int.from_bytes(self._frame[5:9], byteorder="little", signed=False)
+
+
+class WriteS32HarpMessage(WriteHarpMessage):
+    def __init__(self, address: int, value: int | List[int]):
+        if isinstance(value, list):
+            payload = bytearray()
+            for val in value:
+                payload += val.to_bytes(4, byteorder="little", signed=True)
+            offset = 15
+        else:
+            payload = value.to_bytes(4, byteorder="little", signed=True)
+            offset = 3
+        super().__init__(
+            PayloadType.S32, payload, address, offset=offset
+        )
+
+    @property
+    def payload(self) -> int | List[int]:
+        return int.from_bytes(self._frame[5:9], byteorder="little", signed=True)
 
 
 class WriteU8ArrayMessage(WriteHarpMessage):
