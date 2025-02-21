@@ -79,10 +79,6 @@ def test_create_write_S16() -> None:
     print(message.frame)
 
 
-def test_create_writeS32() -> None:
-    assert False
-
-
 def test_read_who_am_i() -> None:
     message = HarpMessage.ReadU16(CommonRegisters.WHO_AM_I)
 
