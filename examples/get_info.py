@@ -37,8 +37,9 @@ device_harp_l = device.HARP_VERSION_L           # Get device's harp core version
 device_assembly = device.ASSEMBLY_VERSION       # Get device's assembly version
 
 reg_dump = device.dump_registers()
-for reg in reg_dump:
-    print(reg)
+for reg_reply in reg_dump:
+    print(reg_reply)
+    print()
 
 # Close connection
 device.disconnect()
