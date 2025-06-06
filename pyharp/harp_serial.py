@@ -48,10 +48,13 @@ class HarpSerial:
             self._ser,
             partial(HarpSerialProtocol, self._read_q),
         )
+        self._reader.daemon = True
+        self._reader.name = f"{serial_port}_harp_serial_reader_worker"
         self._reader.start()
         transport, protocol = self._reader.connect()
 
         self._parse_thread = threading.Thread(
+            name=f"{serial_port}_harp_serial_parse_worker",
             target=self.parse_harp_msgs_threaded,
             daemon=True,
         )
