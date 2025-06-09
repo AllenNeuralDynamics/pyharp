@@ -97,6 +97,7 @@ class Device:
         self._ser.close()
 
     def read_who_am_i(self) -> int:
+        self.log.debug("Requesting whoami.")
         address = CommonRegisters.WHO_AM_I
 
         reply: ReplyHarpMessage = self.send(
