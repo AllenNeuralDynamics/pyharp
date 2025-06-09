@@ -97,6 +97,7 @@ class Device:
         self._ser.close()
 
     def read_who_am_i(self) -> int:
+        self.log.debug("Requesting whoami.")
         address = CommonRegisters.WHO_AM_I
 
         reply: ReplyHarpMessage = self.send(
@@ -271,6 +272,7 @@ class Device:
     def send(self, message_bytes: bytearray, dump: bool = True) -> ReplyHarpMessage:
         """Send a harp message; return the device's reply."""
         #print(f"Sending: {repr(message_bytes)}")
+        self.log.debug(f"sent: {repr(message_bytes)}")
         self._ser.write(message_bytes)
 
         # TODO: handle case where read is None

@@ -159,6 +159,9 @@ class HarpMessage:
     def WriteS32(address: int, value: int) -> WriteS32HarpMessage:
         return WriteS32HarpMessage(address, value)
 
+    def WriteS32Array(address: int, value: list[int]) -> WriteS32HarpMessage:
+        return WriteS32ArrayHarpMessage(address, value)
+
     @staticmethod
     def parse(frame: bytearray) -> ReplyHarpMessage:
         return ReplyHarpMessage(frame)
@@ -291,6 +294,9 @@ class ReadU32HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
         super().__init__(PayloadType.U32, address)
 
+class ReadS32HarpMessage(ReadHarpMessage):
+    def __init__(self, address: int):
+        super().__init__(PayloadType.S32, address)
 
 class ReadS32HarpMessage(ReadHarpMessage):
     def __init__(self, address: int):
@@ -423,3 +429,29 @@ class WriteS32HarpMessage(WriteHarpMessage):
     @property
     def payload(self) -> int | List[int]:
         return int.from_bytes(self._frame[5:9], byteorder="little", signed=True)
+
+
+class WriteU8ArrayMessage(WriteHarpMessage):
+    def __init__(self, address: int, data_format, value: Union[list, tuple]):
+        self.data_format = data_format
+        packed_data = struct.pack(self.data_format, *value)
+        super().__init__(PayloadType.U8, packed_data, address,
+                         offset=(len(packed_data)-1))
+
+    @property
+    def payload(self) -> List[int]:
+        return struct.unpack('{self.data_format}', self._frame[5:4*self.payload_count])[0]
+
+
+class WriteS32ArrayHarpMessage(WriteHarpMessage):
+    def __init__(self, address: int, value: int):
+        self.payload_count = len(value)
+        super().__init__(
+            PayloadType.S32,
+            struct.pack('<{len(value)l', *value),
+            address, offset=(4*self.payload_count - 1))
+
+
+    @property
+    def payload(self) -> int:
+        return struct.unpack('<{self.payload_count}l', self._frame[5:4*self.payload_count])[0]
