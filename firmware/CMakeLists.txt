@@ -6,7 +6,11 @@ add_definitions(-DGIT_HASH="${COMMIT_ID}") # Usable in source code.
 
 #add_definitions(-DDEBUG) # Uncomment for debugging
 add_definitions(-DUSBD_MANUFACTURER="Allen Institute")
-add_definitions(-DUSBD_PRODUCT="valve-controller")
+add_definitions(-DHARP_DEVICE_DESCRIPTION="valve-controller | Fw0.0.0 | valve controller")
+
+pico_set_program_name(${PROJECT_NAME} "valve-controller")
+pico_set_program_description(${PROJECT_NAME} "valve-controller | Fw0.0.0 | valve controller")
+pico_set_program_version(${PROJECT_NAME} "0.0.0")
 
 # PICO_SDK_PATH must be defined.
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)

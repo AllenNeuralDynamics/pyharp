@@ -20,9 +20,9 @@ device.info()                           # Display device's info on screen
 
 valve_config = \
 (
-    0.5, # Hit output [0-1.0]
+    0.8, # Hit output [0-1.0]
     0.25, # Hold output [0-1.0]
-    100000,   # Hit duration in microseconds [0-65535]
+    500000,   # Hit duration in microseconds [0-65535]
 )
 data_fmt = "<ffL"
 print("Configuring Valve Output 0.")

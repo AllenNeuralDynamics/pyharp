@@ -8,6 +8,14 @@ from time import sleep
 import os
 import serial.tools.list_ports
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+#logging.getLogger().addHandler(logging.StreamHandler())
+
+
+#logger = logging.getLogger()
+#logger.setLevel(logging.DEBUG)
+
 # Open serial connection with the first Valve Controller.
 com_port = None
 ports = serial.tools.list_ports.comports()
@@ -26,6 +34,7 @@ print("reply:")
 print(reply)
 print()
 sleep(1.0)
+print("Disabling Valve0")
 reply = device.send(HarpMessage.WriteU16(AppRegs.ValvesClear, valves).frame)
 print("reply:")
 print(reply)

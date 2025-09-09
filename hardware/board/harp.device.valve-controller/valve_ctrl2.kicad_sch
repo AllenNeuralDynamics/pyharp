@@ -3379,7 +3379,6 @@
 	)
 	(label "CTRL12"
 		(at 100.33 80.01 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3390,7 +3389,6 @@
 	)
 	(label "CTRL9"
 		(at 100.33 46.99 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3401,7 +3399,6 @@
 	)
 	(label "CTRL15"
 		(at 100.33 161.29 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3412,7 +3409,6 @@
 	)
 	(label "CTRL10"
 		(at 100.33 41.91 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3423,7 +3419,6 @@
 	)
 	(label "CTRL16"
 		(at 134.62 161.29 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3434,7 +3429,6 @@
 	)
 	(label "CTRL14"
 		(at 100.33 118.11 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3445,7 +3439,6 @@
 	)
 	(label "CTRL14"
 		(at 134.62 123.19 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3456,7 +3449,6 @@
 	)
 	(label "CTRL12"
 		(at 134.62 85.09 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3467,7 +3459,6 @@
 	)
 	(label "CTRL11"
 		(at 100.33 85.09 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3478,7 +3469,6 @@
 	)
 	(label "CTRL16"
 		(at 100.33 156.21 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3489,7 +3479,6 @@
 	)
 	(label "CTRL10"
 		(at 134.62 46.99 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3500,7 +3489,6 @@
 	)
 	(label "CTRL13"
 		(at 100.33 123.19 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3512,7 +3500,6 @@
 	(hierarchical_label "OUT12"
 		(shape input)
 		(at 60.96 123.19 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3524,7 +3511,6 @@
 	(hierarchical_label "OUT8"
 		(shape input)
 		(at 59.69 46.99 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3536,7 +3522,6 @@
 	(hierarchical_label "OUT14"
 		(shape input)
 		(at 60.96 161.29 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3548,7 +3533,6 @@
 	(hierarchical_label "OUT11"
 		(shape input)
 		(at 67.31 80.01 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3560,7 +3544,6 @@
 	(hierarchical_label "OUT13"
 		(shape input)
 		(at 67.31 118.11 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3572,7 +3555,6 @@
 	(hierarchical_label "OUT9"
 		(shape input)
 		(at 67.31 41.91 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3584,7 +3566,6 @@
 	(hierarchical_label "OUT15"
 		(shape input)
 		(at 67.31 156.21 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3596,7 +3577,6 @@
 	(hierarchical_label "OUT10"
 		(shape input)
 		(at 59.69 85.09 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)

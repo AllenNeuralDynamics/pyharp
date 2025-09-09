@@ -589,8 +589,8 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "exports/gerbers/",
-      "pos_files": "exports/",
+      "plot": "exports/valve_controller_1.1/gerbers/",
+      "pos_files": "exports/valve_controller_1.1/",
       "specctra_dsn": "",
       "step": "",
       "svg": "",
@@ -600,7 +600,7 @@
   },
   "schematic": {
     "annotate_start_num": 0,
-    "bom_export_filename": "valve-controller-bom.csv",
+    "bom_export_filename": "exports/valve_controller_1.1/valve-controller.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",

@@ -5299,10 +5299,6 @@
 		(uuid "95f04bf9-5d6c-4c3a-9671-05c015b6a9e5")
 	)
 	(no_connect
-		(at 224.79 85.09)
-		(uuid "a64ab353-3c5f-479c-8897-224f58fcfd47")
-	)
-	(no_connect
 		(at 41.275 52.705)
 		(uuid "bdfcf20f-2f72-499f-b1cc-853628bf45ad")
 	)
@@ -6842,6 +6838,16 @@
 	)
 	(wire
 		(pts
+			(xy 224.79 85.09) (xy 227.33 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c3b23dc-266e-41d2-9eb3-3bf69b004caf")
+	)
+	(wire
+		(pts
 			(xy 24.13 86.995) (xy 25.4 86.995)
 		)
 		(stroke
@@ -8044,7 +8050,6 @@
 	)
 	(label "HARP_CLK_SYNC"
 		(at 40.64 123.825 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8055,7 +8060,6 @@
 	)
 	(label "QSPI_CS"
 		(at 53.34 103.505 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8066,7 +8070,6 @@
 	)
 	(label "UART0_TXD"
 		(at 227.33 74.93 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8077,7 +8080,6 @@
 	)
 	(label "QSPI_D3"
 		(at 160.02 87.63 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8088,7 +8090,6 @@
 	)
 	(label "QSPI_D2"
 		(at 160.02 85.09 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8099,7 +8100,6 @@
 	)
 	(label "D-"
 		(at 95.25 41.91 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8110,7 +8110,6 @@
 	)
 	(label "UART0_RXD"
 		(at 25.4 89.535 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8121,7 +8120,6 @@
 	)
 	(label "QSPI_D1"
 		(at 160.02 82.55 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8132,7 +8130,6 @@
 	)
 	(label "QSPI_D0"
 		(at 273.05 31.75 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8143,7 +8140,6 @@
 	)
 	(label "DD-"
 		(at 146.05 41.91 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8154,7 +8150,6 @@
 	)
 	(label "QSPI_D3"
 		(at 273.05 41.91 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8165,7 +8160,6 @@
 	)
 	(label "DD+"
 		(at 146.05 39.37 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8176,7 +8170,6 @@
 	)
 	(label "HARP_CLK_SYNC"
 		(at 227.33 87.63 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8187,7 +8180,6 @@
 	)
 	(label "QSPI_CS"
 		(at 241.3 34.29 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8198,7 +8190,6 @@
 	)
 	(label "USB_Boot"
 		(at 31.75 103.505 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8209,7 +8200,6 @@
 	)
 	(label "UART0_TXD"
 		(at 25.4 86.995 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8220,7 +8210,6 @@
 	)
 	(label "QSPI_CLK"
 		(at 241.3 39.37 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8231,7 +8220,6 @@
 	)
 	(label "DD-"
 		(at 234.95 67.31 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8242,7 +8230,6 @@
 	)
 	(label "UART0_RXD"
 		(at 227.33 77.47 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8253,7 +8240,6 @@
 	)
 	(label "D-"
 		(at 68.58 38.735 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8264,7 +8250,6 @@
 	)
 	(label "QSPI_D2"
 		(at 273.05 39.37 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8275,7 +8260,6 @@
 	)
 	(label "VDD1"
 		(at 106.68 30.48 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8286,7 +8270,6 @@
 	)
 	(label "VDD1"
 		(at 39.37 140.335 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8297,7 +8280,6 @@
 	)
 	(label "D+"
 		(at 68.58 43.815 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8308,7 +8290,6 @@
 	)
 	(label "D+"
 		(at 95.25 39.37 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8319,7 +8300,6 @@
 	)
 	(label "QSPI_D1"
 		(at 273.05 34.29 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8330,7 +8310,6 @@
 	)
 	(label "QSPI_D0"
 		(at 160.02 80.01 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8341,7 +8320,6 @@
 	)
 	(label "QSPI_CLK"
 		(at 160.02 91.44 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8352,7 +8330,6 @@
 	)
 	(label "QSPI_CS"
 		(at 160.02 76.2 180)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8363,7 +8340,6 @@
 	)
 	(label "DD+"
 		(at 234.95 64.77 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8375,7 +8351,6 @@
 	(hierarchical_label "OUT1"
 		(shape input)
 		(at 227.33 92.71 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8387,7 +8362,6 @@
 	(hierarchical_label "OUT5"
 		(shape input)
 		(at 227.33 102.87 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8399,7 +8373,6 @@
 	(hierarchical_label "OUT11"
 		(shape input)
 		(at 227.33 118.11 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8411,7 +8384,6 @@
 	(hierarchical_label "OUT12"
 		(shape input)
 		(at 227.33 120.65 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8423,7 +8395,6 @@
 	(hierarchical_label "OUT13"
 		(shape input)
 		(at 227.33 123.19 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8435,7 +8406,6 @@
 	(hierarchical_label "OUT14"
 		(shape input)
 		(at 227.33 125.73 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8447,7 +8417,6 @@
 	(hierarchical_label "OUT15"
 		(shape input)
 		(at 227.33 128.27 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8459,7 +8428,6 @@
 	(hierarchical_label "OUT7"
 		(shape input)
 		(at 227.33 107.95 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8468,10 +8436,20 @@
 		)
 		(uuid "4ade1e21-f62e-401e-81e7-0879c3f623b2")
 	)
+	(hierarchical_label "AUX_LED_ENABLE"
+		(shape input)
+		(at 227.33 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4e81d58b-3835-492c-b8a1-8b9b73dfe404")
+	)
 	(hierarchical_label "OUT2"
 		(shape input)
 		(at 227.33 95.25 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8483,7 +8461,6 @@
 	(hierarchical_label "GPIO1"
 		(shape input)
 		(at 227.33 133.35 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8495,7 +8472,6 @@
 	(hierarchical_label "GPIO4"
 		(shape input)
 		(at 227.33 143.51 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8507,7 +8483,6 @@
 	(hierarchical_label "GPIO2"
 		(shape input)
 		(at 227.33 135.89 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8519,7 +8494,6 @@
 	(hierarchical_label "GPIO5"
 		(shape input)
 		(at 227.33 146.05 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8531,7 +8505,6 @@
 	(hierarchical_label "OUT8"
 		(shape input)
 		(at 227.33 110.49 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8543,7 +8516,6 @@
 	(hierarchical_label "GPIO3"
 		(shape input)
 		(at 227.33 138.43 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8555,7 +8527,6 @@
 	(hierarchical_label "GPIO6"
 		(shape input)
 		(at 227.33 148.59 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8567,7 +8538,6 @@
 	(hierarchical_label "OUT0"
 		(shape input)
 		(at 227.33 90.17 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8579,7 +8549,6 @@
 	(hierarchical_label "GPIO0"
 		(shape input)
 		(at 227.33 130.81 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8591,7 +8560,6 @@
 	(hierarchical_label "OUT6"
 		(shape input)
 		(at 227.33 105.41 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8603,7 +8571,6 @@
 	(hierarchical_label "OUT4"
 		(shape input)
 		(at 227.33 100.33 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8615,7 +8582,6 @@
 	(hierarchical_label "OUT9"
 		(shape input)
 		(at 227.33 113.03 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8627,7 +8593,6 @@
 	(hierarchical_label "OUT3"
 		(shape input)
 		(at 227.33 97.79 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8639,7 +8604,6 @@
 	(hierarchical_label "GPIO7"
 		(shape input)
 		(at 227.33 151.13 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8651,7 +8615,6 @@
 	(hierarchical_label "OUT10"
 		(shape input)
 		(at 227.33 115.57 0)
-		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8928,7 +8891,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "047a6ab9-8f72-4593-af1b-1be8203c70c1")
 		(property "Reference" "FID1"
 			(at 266.7 160.655 0)
@@ -9514,7 +9477,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "10dc0a93-c4d5-40f7-8523-d91fddfa9930")
 		(property "Reference" "FID2"
 			(at 272.415 160.655 0)
@@ -15249,7 +15212,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "99e58a8f-abd9-45d3-9dec-c468fb0fff67")
 		(property "Reference" "FID3"
 			(at 278.13 160.655 0)
